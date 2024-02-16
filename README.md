@@ -1,1 +1,3 @@
-# Olink_ExploreHT_General
+# Olink_ExploreHT_CapstoneProject
+
+will update the README when the code is done! 
