@@ -182,7 +182,7 @@ for (i in 1:length(assays)){
   graph <- ggplot(assay_group, aes(x=SampleID, y=NPX)) + geom_point(aes(color=LOD_check), size=2) + 
     theme_bw() + theme(axis.text.x = element_text(angle=90)) +
     geom_hline(yintercept = assay_group$Max_LOD, color='red', linetype='dashed') + 
-    scale_color_manual(values = cols) +
+    scale_color_manual(values = colls) +
     ggtitle(paste(assays[i], ' NPXs', sep=''))
   named <- paste(assays[i], '_OlinkHT_LODcheck.png', sep='')
   #ggsave(path = 'OlinkHT_LODcheck_ped_figures', filename=named, width = 8, height = 5)
@@ -242,7 +242,7 @@ for (i in 1:dim(proteins)[1]){
     ## GENERATE LINE GRAPHS PER ASSAY + PER SUBJECT COMPARING HT + TARGET96 + FLEX48 DATASETS
     line_plot <- ggplot() + 
       geom_point(full_set, mapping=aes(x=Time, y=NPX, color=Panel), size=2) + geom_line(sub_set, mapping=aes(x=Time, y=NPX, color=Panel), linetype='longdash') +
-      theme_bw() +  xlab('Time (days)') + scale_color_manual(values = cols) +
+      theme_bw() +  xlab('Time (days)') + scale_color_manual(values = collls) +
       ggtitle(paste(this_assay, ' for Subject ', t_subject, ' : Olink Panels', sep=''))
     named <- paste(this_assay, '-', t_subject, '.png', sep='')
     #ggsave(path = 'Olink_Lines', filename=named, height=8, width = 8)
@@ -251,7 +251,7 @@ for (i in 1:dim(proteins)[1]){
   ## HISTOGRAMS FOR FULL ASSAY
   hist_plot <- ggplot(gene_set, aes(NPX, fill=Panel)) +
     geom_histogram(alpha=0.5, position='dodge2', bins=50) + xlab('Values (NPX)') + ylab('Count') +
-    scale_fill_manual(values = cols) + 
+    scale_fill_manual(values = collls) + 
     ggtitle(paste('Olink Value Distribution for ', this_assay, sep=''))
   thisname <- paste(this_assay, '_hist.png', sep='')
   #ggsave(path = 'Olink_Histograms', filename = thisname, width=8, height=8)
@@ -259,7 +259,7 @@ for (i in 1:dim(proteins)[1]){
   ## BAR GRAPHS
   bar_plot <- ggplot(gene_set, aes(factor(Time), NPX, fill=Panel, group=Subject)) + 
     geom_bar(stat='identity', position = 'dodge2') + theme_bw() + 
-    scale_fill_manual(values=cols) + 
+    scale_fill_manual(values=collls) + 
     xlab('Time (days)') + ylab ('Values(NPX)') + 
     ggtitle(paste('Olink Values (NPX) for ', this_assay, sep=''))
   #ggsave(path = 'Olink_Bars', filename = paste(this_assay, '_bars.png', sep=''), width=8, height=8)
