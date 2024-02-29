@@ -24,6 +24,7 @@ Part 4 - Olink Cross-Panel Comparisons
 1. Read in Target96 NPX file + associated manifest.
 2. Read in Flex48 NPX file + associated manifest.
 3. Apply pediatric + peripheral blood filter.
-4. Iterate through each assay.
-5. Iterate through each subject to generate line plots for NPX.
-6. Generate histograms + bar graphs by assay.
+4. AdjustedNPX calculations.
+5. Iterate through each assay.
+6. Iterate through each subject to generate line plots for NPX.
+7. Generate histograms + bar graphs by assay.
