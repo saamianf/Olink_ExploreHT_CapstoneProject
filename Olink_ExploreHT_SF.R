@@ -233,37 +233,47 @@ for (i in 1:dim(proteins)[1]){
   ht_subset <- na.omit(subset(ht_m_p, Assay == as.character(this_assay)))
   tf_subset <- subset(tf_data, Assay == as.character(this_assay))
   gene_set <- full_join(ht_subset, tf_subset)
+  
+  ## CALCULATE ADJUSTED NPX 
+  baselines <- subset(gene_set, Time == 0 & Pre_Post == 'pre')
+  gene_set$AdjustedNPX <- gene_set$NPX
+  for (i in 1:dim(gene_set)[1]){
+    baselineval <- baselines[which(baselines$Subject == gene_set[i,24] & baselines$Panel == gene_set[i,11] & baselines$Assay == gene_set[i, 9]),]
+    if (dim(baselineval)[1] == 0) {
+      gene_set[i,41] <- as.numeric(gene_set[i,15])
+    } else {
+      gene_set[i,41] <- as.numeric(gene_set[i,15]) - as.numeric(baselineval[1,15])
+    }}
+  
   for (j in 1:length(subjects)){
     t_subject <- subjects[j]
-    ht_subset2 <- subset(ht_subset, Subject == as.character(t_subject))
-    tf_subset2 <- subset(tf_subset, Subject == as.character(t_subject))
-    sub_set <- full_join(ht_subset2, tf_subset2)
+    sub_set <- subset(gene_set, Subject == as.character(t_subject))
     
     ## GENERATE LINE GRAPHS PER ASSAY + PER SUBJECT COMPARING HT + TARGET96 + FLEX48 DATASETS
     line_plot <- ggplot() + 
-      geom_point(full_set, mapping=aes(x=Time, y=NPX, color=Panel), size=2) + geom_line(sub_set, mapping=aes(x=Time, y=NPX, color=Panel), linetype='longdash') +
+      geom_point(subset(sub_set, Time > -1), mapping=aes(x=Time, y=AdjustedNPX, color=Panel), size=2) + geom_line(sub_set, mapping=aes(x=Time, y=AdjustedNPX, color=Panel), linetype='longdash') +
       theme_bw() +  xlab('Time (days)') + scale_color_manual(values = collls) +
       ggtitle(paste(this_assay, ' for Subject ', t_subject, ' : Olink Panels', sep=''))
     named <- paste(this_assay, '-', t_subject, '.png', sep='')
-    #ggsave(path = 'Olink_Lines', filename=named, height=8, width = 8)
+    ggsave(path = 'Olink_Lines', filename=named, height=8, width = 8)
   }
 
   ## HISTOGRAMS FOR FULL ASSAY
-  hist_plot <- ggplot(gene_set, aes(NPX, fill=Panel)) +
-    geom_histogram(alpha=0.5, position='dodge2', bins=50) + xlab('Values (NPX)') + ylab('Count') +
+  hist_plot <- ggplot(subset(gene_set, Time > -1), aes(AdjustedNPX, fill=Panel)) +
+    geom_histogram(alpha=0.5, position='dodge2', bins=50) + xlab('Values (AdjustedNPX)') + ylab('Count') +
     scale_fill_manual(values = collls) + 
-    ggtitle(paste('Olink Value Distribution for ', this_assay, sep=''))
+    ggtitle(paste('Olink Value (AdjustedNPX) Distribution for ', this_assay, sep=''))
   thisname <- paste(this_assay, '_hist.png', sep='')
-  #ggsave(path = 'Olink_Histograms', filename = thisname, width=8, height=8)
+  ggsave(path = 'Olink_Histograms', filename = thisname, width=8, height=8)
     
   ## BAR GRAPHS
-  bar_plot <- ggplot(gene_set, aes(factor(Time), NPX, fill=Panel, group=Subject)) + 
+  bar_plot <- ggplot(subset(gene_set, Time > -1), aes(factor(Time), AdjustedNPX, fill=Panel, group=Subject)) + 
     geom_bar(stat='identity', position = 'dodge2') + theme_bw() + 
     scale_fill_manual(values=collls) + 
-    xlab('Time (days)') + ylab ('Values(NPX)') + 
-    ggtitle(paste('Olink Values (NPX) for ', this_assay, sep=''))
-  #ggsave(path = 'Olink_Bars', filename = paste(this_assay, '_bars.png', sep=''), width=8, height=8)
-   }
+    xlab('Time (days)') + ylab ('Values(AdjustedNPX)') + 
+    ggtitle(paste('Olink Values (AdjustedNPX) for ', this_assay, sep=''))
+  ggsave(path = 'Olink_Bars', filename = paste(this_assay, '_bars.png', sep=''), width=8, height=8)
+}
 
 end <- Sys.time()
 print('end Part 4 (Olink Cross-Panel Comparisons) at')
