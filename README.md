@@ -29,4 +29,4 @@ Part 4 - Olink Cross-Panel Comparisons
 6. Iterate through each subject to generate line plots for NPX.
 7. Generate histograms + bar graphs by assay.
 
-![image](https://github.com/saamianf/Olink_ExploreHT_CapstoneProject/assets/120279968/099d266d-a3af-45ce-be62-341058c9473c)
+![image](https://github.com/saamianf/Olink_ExploreHT_CapstoneProject/assets/120279968/4bbe53e0-7281-41d2-a91c-8ec8bdc191ab)
