@@ -9,8 +9,8 @@ start <- Sys.time()
 print('start Part 1 (LOD Evaluation) at')
 print(start)
 
-## ADJUST FILE NAMES FOR INPUTS + OUTPUTS THROUGHOUT CODE IF NEEDED
-ht <- read.csv('Project_HT.csv')
+## ADJUST FILE NAMES FOR INPUTS + OUTPUTS THROUGHOUT CODE IF NEEDED (at '## file')
+ht <- read.csv('Project_HT.csv') ## file
 
 ## DETERMINE LOD CUTOFF VALUE FOR EACH ASSAY 
 ht$Max_LOD <- NA
@@ -79,8 +79,8 @@ print('start Part 2 (General Figures) at')
 print(start)
 
 ## READ IN HT FILE & ASSOCIATED MANIFEST
-ht_npx <- read_NPX('Project_HT_LODcheck_SF.csv')
-mani <- read_excel('Project_HT_manifest.xlsx')
+ht_npx <- read_NPX('HT_LODcheck_SF.csv') 
+mani <- read_excel('Project_HT_manifest.xlsx') ## file
 ht_m <- merge(ht_npx, mani)
 
 ## FILTERING FOR PEDIATRIC ONLY SUBJECTS FROM FULL HT DATASET
@@ -198,16 +198,16 @@ print('start Part 4 (Olink Cross-Panel Comparisons) at')
 print(start)
 
 ## READ IN & SORT TARGET96 DATA & MANIFEST
-t96_npx <- read_excel('Project_Target96_NPX.xlsx')
-mani96 <- read_excel('Project_Target96_manifest.xlsx') 
+t96_npx <- read_excel('Project_Target96_NPX.xlsx') ## file
+mani96 <- read_excel('Project_Target96_manifest.xlsx') ## file
 mani_re <- mani96[,4:9]
 mani_re <- mani_re |> uncount(288) 
 t96_wmani <- bind_cols(t96_npx, mani_re)
 t96_data <- t96_wmani %>% arrange(Subject_Group, Subject_ID, Time)
 
 ## READ IN & SORT FLEX48 DATA & MANIFEST
-f48_npx <- read_excel('Project_Flex48_NPX.xlsx')
-mani48 <- read_excel('Project_Flex48_manifest.xlsx') 
+f48_npx <- read_excel('Project_Flex48_NPX.xlsx') ## file
+mani48 <- read_excel('Project_Flex48_manifest.xlsx') ## file
 f48_data <- merge(f48_npx, mani48)
 
 ## FILTERING FOR PEDIATRIC ONLY SUBJECTS FROM FULL TARGET96 & FLEX48 DATASET
@@ -223,7 +223,7 @@ tf_data <- full_join(t96_data, f48_data)
 tf_data$LOD_check <- ifelse(tf_data[,12] > tf_data[,11], 'PASS', 'WARNING')
 
 ## GET ASSAY + SUBJECT DATA
-proteins <- read.csv('Project_Olink_Panels_Proteins.csv')
+proteins <- read.csv('Project_Olink_Panels_Proteins.csv') ## file
 subjects <- unique(t96_m_p$Subject[!is.na(tf_data$Subject)])
 
 collls <- c('Explore_HT' = 'black', 'Olink Target 96 Immuno-Oncology' = 'green', 'Olink Target 96 Oncology III' = 'blue', 'Olink Target 96 Immune Response' = 'purple', 'Flex Panel (FJPL-NVCM)' = 'red', 'Flex Panel (FTDS-ZZQZ)' = 'orange')
