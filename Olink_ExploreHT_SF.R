@@ -79,7 +79,7 @@ print('start Part 2 (General Figures) at')
 print(start)
 
 ## READ IN HT FILE & ASSOCIATED MANIFEST
-ht_npx <- read_NPX('HT_LODcheck_SF.csv')
+ht_npx <- read_NPX('Project_HT_LODcheck_SF.csv')
 mani <- read_excel('Project_HT_manifest.xlsx')
 ht_m <- merge(ht_npx, mani)
 
@@ -94,66 +94,66 @@ ht_m_p <- rbind(ht_m_ped, ht_m_n)
 heatmap1 <- olink_heatmap_plot(df=ht_m_ped_all, variable_row_list = 'Subject', cluster_rows=FALSE, 
                 cluster_cols=FALSE, colnames='assay', show_colnames = FALSE,
                 main = 'Heatmap (centered/scaled)')
-#ggsave(path = 'figures', filename='heatmap_scaled.png', width = 10, height = 10)
+#ggsave(path = 'figures', filename='heatmap_scaled.tiff', width = 10, height = 10)
 heatmap2 <- olink_heatmap_plot(df=ht_m_ped_all, variable_row_list = 'Subject', center_scale=FALSE, 
                 cluster_rows=FALSE, cluster_cols=FALSE, show_colnames = FALSE, 
                 colnames='assay', main = 'Heatmap (uncentered/unscaled)')
-#ggsave(path = 'figures', filename='heatmap_unscaled.png', width = 10, height = 10)
+#ggsave(path = 'figures', filename='heatmap_unscaled.tiff', width = 10, height = 10)
 
 ## GENERATE NPX DISTRIBUTION PLOTS BASED ON DIFFERENT QC CHECKS (Select the most applicable)
 dist_assay <- olink_dist_plot(ht_m_ped_all, color_g = AssayQC) + 
   labs(title = 'AssayQC Distribution') + theme(axis.text.x = element_text(angle = 90))
-#ggsave(path = 'figures', filename='dist_assay.png', width = 15, height = 4)
+#ggsave(path = 'figures', filename='dist_assay.tiff', width = 15, height = 4)
 dist_sample <- olink_dist_plot(ht_m_ped_all, color_g = SampleQC) + 
   labs(title = 'SampleQC Distribution') + theme(axis.text.x = element_text(angle = 90))
 #ggsave(path = 'figures', filename='dist_sample.png', width = 15, height = 4)
 dist_lod <- olink_dist_plot(ht_m_ped_all, color_g = LOD_check) + 
   labs(title = 'LOD Distribution') + theme(axis.text.x = element_text(angle = 90))
-#ggsave(path = 'figures', filename='dist_lod.png', width = 15, height = 4)
+#ggsave(path = 'figures', filename='dist_lod.tiff', width = 15, height = 4)
 
 ## GENERATE QC PLOTS BASED ON DIFFERENT QC CHECKS (Select the most applicable)
 qc_assay <- olink_qc_plot(ht_m_ped_all, color_g = AssayQC) + labs(title = 'AssayQC QC Plot')
-#ggsave(path = 'figures', filename='qc_assay.png', width = 8, height = 8)
+#ggsave(path = 'figures', filename='qc_assay.tiff', width = 8, height = 8)
 qc_sample <- olink_qc_plot(ht_m_ped_all, color_g = SampleQC) +  labs(title = 'SampleQC QC Plot')
-#ggsave(path = 'figures', filename='qc_sample.png', width = 8, height = 8)
+#ggsave(path = 'figures', filename='qc_sample.tiff', width = 8, height = 8)
 qc_lod <- olink_qc_plot(ht_m_ped_all, color_g = LOD_check) + labs(title = 'LOD QC Plot')
-#ggsave(path = 'figures', filename='qc_lod.png', width = 8, height = 8)
+#ggsave(path = 'figures', filename='qc_lod.tiff', width = 8, height = 8)
 
 ## GENERATE UMAP PLOTS WITH DIFFERENT GROUPINGS (Select the most applicable) 
 umap_subject <- olink_umap_plot(ht_m_ped_all, color_g='Subject', quiet=TRUE)
-#ggsave(path = 'figures', filename='umap_subject.png', width = 10, height = 10)
+#ggsave(path = 'figures', filename='umap_subject.tiff', width = 10, height = 10)
 umap_p <- olink_umap_plot(ht_m_ped_all, color_g='Pre_Post', quiet=TRUE)
-#ggsave(path = 'figures', filename='umap_p.png', width = 10, height = 10)
+#ggsave(path = 'figures', filename='umap_p.tiff', width = 10, height = 10)
 umap_g <- olink_umap_plot(ht_m_ped_all, color_g='Group', quiet=TRUE)
-#ggsave(path = 'figures', filename='umap_g.png', width = 10, height = 10)
+#ggsave(path = 'figures', filename='umap_g.tiff', width = 10, height = 10)
 
-## RUN T-TESTS OF SUBGROUPS & GENERATE VOLCANO PLOTS 
-t_ped <- olink_ttest(ht_m_p, variable='Pre_Post') 
-vol_ped <- olink_volcano_plot(t_ped, x_lab = 'Log2FoldChange (NPX Difference)') + labs(title = 'Pediatric Samples') 
-ggsave(path = 'figures', filename='ttest.png', width = 10, height = 10)
+## RUN T-TESTS OF SUBGROUPS & GENERATE VOLCANO PLOTS
+t_ped <- olink_ttest(ht_m_p, variable='Pre_Post')
+vol_ped <- olink_volcano_plot(t_ped, x_lab = 'Log2FoldChange (NPX Difference)') + labs(title = 'Pediatric Samples')
+#ggsave(path = 'figures', filename='ttest.png', width = 10, height = 10)
 
-## GENERATE LOD-COLORED VOLCANO PLOT 
+## GENERATE LOD-COLORED VOLCANO PLOT
 protein_lods <- subset(protein_check, LOD_check == 'WARNING')
 protein_lods$Percent_Warning <- gsub('%', '', protein_lods$Percent_Warning)
 t_ped$LOD_asPercentages <- NA
 for (i in 1:dim(t_ped)[1]){
-  lod_c <- subset(protein_lods, Assay == as.character(t_ped[i,1]))
-  t_ped[i,17] <- ifelse (as.numeric(lod_c[1,4]) < 70, ifelse(as.numeric(lod_c[1,4]) == 0, 'NONE (0)' , 'PASS (<70%)'), 'WARNING (>70%)')
+ lod_c <- subset(protein_lods, Assay == as.character(t_ped[i,1]))
+ t_ped[i,17] <- ifelse (as.numeric(lod_c[1,4]) < 70, ifelse(as.numeric(lod_c[1,4]) == 0, 'NONE (0)' , 'PASS (<70%)'), 'WARNING (>70%)')
 }
 cols <- c('NONE (0)' = 'green', 'PASS (<70%)' = 'black', 'WARNING (>70%)' = 'red')
-vol_ped_lod <- olink_volcano_plot(t_ped, x_lab = 'Log2FoldChange (NPX Difference)') + 
-  geom_point(t_ped, mapping = aes(x=estimate, y=(-log10(p.value)), color = LOD_asPercentages)) + 
-  scale_color_manual(values=cols) + labs(title = 'All Samples - LOD labeled') +
-  labs(color=('LOD_warnings'))
-ggsave(path = 'figures', filename='ttest_lod.png', width = 10, height = 10)
+vol_ped_lod <- olink_volcano_plot(t_ped, x_lab = 'Log2FoldChange (NPX Difference)') +
+ geom_point(t_ped, mapping = aes(x=estimate, y=(-log10(p.value)), color = LOD_asPercentages)) +
+ scale_color_manual(values=cols) + labs(title = 'All Samples - LOD labeled') +
+ labs(color=('LOD_warnings'))
+#ggsave(path = 'figures', filename='ttest_lod.png', width = 10, height = 10)
 
 ## RUN T-TESTS OF EACH PRE-POST PAIR & GENERATE VOLCANO PLOTS
-t_ped_times_0 <- subset(ht_m_p, Time == '0' & Pre_Post == 'pre') 
+t_ped_times_0 <- subset(ht_m_p, Time == '0' & Pre_Post == 'pre')
 t_v <- function(x){
-  this_set <- subset(ht_m_p, Time == x & Pre_Post == 'post')
-  this_ttest <- olink_ttest(rbind(t_ped_times_0, this_set), variable='Pre_Post')
-  this_vol <- olink_volcano_plot(this_ttest, x_lab='log2FoldChange (NPX Difference)') + labs(title = paste('Pediatric Samples - Day 0 pre / Day ', x, ' Pairs', sep=''))
-  #ggsave(path = 'figures', filename=paste0('this_vol_0_', as.character(x), '.png', sep=''), width = 10, height = 10)
+ this_set <- subset(ht_m_p, Time == x & Pre_Post == 'post')
+ this_ttest <- olink_ttest(rbind(t_ped_times_0, this_set), variable='Pre_Post')
+ this_vol <- olink_volcano_plot(this_ttest, x_lab='log2FoldChange (NPX Difference)') + labs(title = paste('Pediatric Samples - Day 0 pre / Day ', x, ' Pairs', sep=''))
+ #ggsave(path = 'figures', filename=paste0('this_vol_0_', as.character(x), '.png', sep=''), width = 10, height = 10)
 }
 t_v(1)
 t_v(4)
@@ -184,7 +184,7 @@ for (i in 1:length(assays)){
     geom_hline(yintercept = assay_group$Max_LOD, color='red', linetype='dashed') + 
     scale_color_manual(values = colls) +
     ggtitle(paste(assays[i], ' NPXs', sep=''))
-  named <- paste(assays[i], '_OlinkHT_LODcheck.png', sep='')
+  named <- paste(assays[i], '_OlinkHT_LODcheck.tiff', sep='')
   #ggsave(path = 'OlinkHT_LODcheck_ped_figures', filename=named, width = 8, height = 5)
 }
 end <- Sys.time()
@@ -251,11 +251,11 @@ for (i in 1:dim(proteins)[1]){
     
     ## GENERATE LINE GRAPHS PER ASSAY + PER SUBJECT COMPARING HT + TARGET96 + FLEX48 DATASETS
     line_plot <- ggplot() + 
-      geom_point(subset(sub_set, Time > -1), mapping=aes(x=Time, y=AdjustedNPX, color=Panel), size=2) + geom_line(sub_set, mapping=aes(x=Time, y=AdjustedNPX, color=Panel), linetype='longdash') +
-      theme_bw() +  xlab('Time (days)') + scale_color_manual(values = collls) +
+      geom_point(subset(sub_set, Time > -1), mapping=aes(x=Time, y=AdjustedNPX, color=Panel), size=2) + geom_line(subset(sub_set, Time > -1), mapping=aes(x=Time, y=AdjustedNPX, color=Panel), linetype='longdash') +
+      theme_bw() +  xlab('Time (days)') + scale_color_manual(values = collls) + xlim(c(0, 28)) +
       ggtitle(paste(this_assay, ' for Subject ', t_subject, ' : Olink Panels', sep=''))
-    named <- paste(this_assay, '-', t_subject, '.png', sep='')
-    ggsave(path = 'Olink_Lines', filename=named, height=8, width = 8)
+    named <- paste(this_assay, '-', t_subject, '.tiff', sep='')
+    #ggsave(path = 'Olink_Lines', filename=named, height=8, width = 8)
   }
 
   ## HISTOGRAMS FOR FULL ASSAY
@@ -263,8 +263,8 @@ for (i in 1:dim(proteins)[1]){
     geom_histogram(alpha=0.5, position='dodge2', bins=50) + xlab('Values (AdjustedNPX)') + ylab('Count') +
     scale_fill_manual(values = collls) + 
     ggtitle(paste('Olink Value (AdjustedNPX) Distribution for ', this_assay, sep=''))
-  thisname <- paste(this_assay, '_hist.png', sep='')
-  ggsave(path = 'Olink_Histograms', filename = thisname, width=8, height=8)
+  thisname <- paste(this_assay, '_hist.tiff', sep='')
+  #ggsave(path = 'Olink_Histograms', filename = thisname, width=8, height=8)
     
   ## BAR GRAPHS
   bar_plot <- ggplot(subset(gene_set, Time > -1), aes(factor(Time), AdjustedNPX, fill=Panel, group=Subject)) + 
@@ -272,7 +272,7 @@ for (i in 1:dim(proteins)[1]){
     scale_fill_manual(values=collls) + 
     xlab('Time (days)') + ylab ('Values(AdjustedNPX)') + 
     ggtitle(paste('Olink Values (AdjustedNPX) for ', this_assay, sep=''))
-  ggsave(path = 'Olink_Bars', filename = paste(this_assay, '_bars.png', sep=''), width=8, height=8)
+  #ggsave(path = 'Olink_Bars', filename = paste(this_assay, '_bars.png', sep=''), width=8, height=8)
 }
 
 end <- Sys.time()
