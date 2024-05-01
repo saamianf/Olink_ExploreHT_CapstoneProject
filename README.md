@@ -30,3 +30,6 @@ Part 4 - Olink Cross-Panel Comparisons
 7. Generate histograms + bar graphs by assay.
 
 <img width="212" alt="workflowCRISP" src="https://github.com/saamianf/Olink_ExploreHT_CapstoneProject/assets/120279968/ab153ace-d158-44bf-ac4d-9c9fd37d9a7a">
+
+<img width="209" alt="LOD" src="https://github.com/saamianf/Olink_ExploreHT_CapstoneProject/assets/120279968/9953a179-06a7-4790-8d73-20d5a3e934fc">
+
