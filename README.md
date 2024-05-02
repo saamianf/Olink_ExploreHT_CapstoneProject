@@ -1,6 +1,6 @@
 # Olink_ExploreHT_CapstoneProject
 
-Part 1 - LOD Evaluation (~ 1 hr)
+Part 1 - LOD Evaluation (~ 30 min)
 1. Read in HT csv file.
 2. Determine LOD cutoff value for each assay.
 3. Determine whether each NPX value for the samples in each assay fall below the LOD cutoff --> output is 'PASS' or 'WARNING'.
