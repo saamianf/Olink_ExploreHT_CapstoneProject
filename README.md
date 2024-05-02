@@ -1,6 +1,6 @@
 # Olink_ExploreHT_CapstoneProject
 
-Note: Due to size of sample input files (particularly the Explore HT data file), all files are stored in the zipped folder. Sample input files follow the setup of the actual data files, however it is simulated data. *files are currently being adjusted so may not be able to run through the full code*
+Note: Due to size of sample input files (particularly the Explore HT data file), all files are stored in the zipped folder. Sample input files follow the setup of the actual data files, however it is simulated data. *Sample input files are currently being adjusted so may not be able to run through the full code!*
 
 Part 1 - LOD Evaluation (~ 30 min)
 1. Read in HT csv file.
